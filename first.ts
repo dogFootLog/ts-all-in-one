@@ -82,3 +82,66 @@ if (head) {
   head.innerHTML = 'hello world'; // Element 타입에 innerHTML이라는 속성이 있다는 것까지 타입에 등록이 돼 있음
   console.log(head);
 }
+
+const x: String = 'hell';
+// 'S'tring type은 객체타입임. new String() 의 String
+
+type World = 'world';
+const w: World = 'world'; // ctrl + spacebar 하면 world를 자동으로 타입 추론해서 추천해줌
+
+type Greeting = `hello ${World}`; // "hello world" >>> world가 ${World}로 들어감. 템플릿 리터럴 타입
+// 현실적인 활용방안
+type Ex1 = 'world' | 'hell';
+type Greeting1 = `hello ${World}`; // hello hell, hello world 추천해줌.
+
+function rest(...args: string[]) {
+  // rest에서도 type 설정 가능
+  console.log(args);
+  // rest('1', '2', '3')과 같이 문자열 타입만 됨.
+}
+
+function rest1(a: number, ...args: string[]) {
+  console.log(a, args);
+  // rest1(1, '2', '3');
+}
+
+const tuple: [string, number] = ['1', 1];
+// tuple[2] = 'hello'; >>> Error
+tuple.push('hello'); // 에러 없음
+
+// type enum
+const enum EDirection {
+  Up,
+  Down,
+  Left,
+  Right,
+}
+// Up의 값을 정하지 않으면 순서대로 위에서부터 0, 1, 2, 3의 값을 가짐
+// Up = 3으로 하면 3, 4, 5, 6이 됨
+// 각자 3, 5, 4, 6 식으로 마음대로 지정도 가능함
+const a1 = EDirection.Up;
+const c1 = EDirection.Left;
+// 사용처: 여러 개의 변수들을 하나의 그룹으로 묶고 싶을 때. 사실 일반 객체가 낫긴 함...
+// Javascript로 변환한 다음에 그룹핑을 남기고 싶지 않으면 쓰고 남기고 싶으면 객체 쓰고...
+
+const ODirection = {
+  Up: 0,
+  Down: 1,
+  Left: 2,
+  Right: 3,
+} as const;
+// 만일 그냥 객체 선언만 하면 타입스크립트가 타입을 제대로 0, 1, 2, 3으로 추론하지 못함
+// 이럴 때 as const 붙이면 type 명명 + readonly까지 됨!
+
+// enum은 타입으로도 사용 가능함. dir이 Up, Down, Left, Right 4개 중 하나여야 한단 뜻
+function walk(dir: EDirection) {}
+walk(EDirection.Left);
+
+// enum을 쓰지 않을려면 다소 복잡해지긴 함
+type Direction = typeof ODirection[keyof typeof ODirection]; // 타입으로 쓸 때는 typeof 붙이고 그냥 키만 뽑아내고 싶으면 keyof만
+function run(dir: Direction) {}
+run(ODirection.Right);
+
+const obj1 = { a: '123', b: 'hello', c: 'world' } as const;
+type Key = typeof obj1[keyof typeof obj1];
+const value1: Key = '1';
