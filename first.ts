@@ -137,11 +137,40 @@ const ODirection = {
 function walk(dir: EDirection) {}
 walk(EDirection.Left);
 
-// enum을 쓰지 않을려면 다소 복잡해지긴 함
+// enum을 쓰지 않을려면 다소 복잡해지긴 함. Key 가져오기
 type Direction = typeof ODirection[keyof typeof ODirection]; // 타입으로 쓸 때는 typeof 붙이고 그냥 키만 뽑아내고 싶으면 keyof만
 function run(dir: Direction) {}
 run(ODirection.Right);
 
-const obj1 = { a: '123', b: 'hello', c: 'world' } as const;
-type Key = typeof obj1[keyof typeof obj1];
-const value1: Key = '1';
+// Value 가져오기
+const obj1 = { a: '123', b: 'hello', c: 'world' } as const; // as const 키워드 없으면 a, b, c 그냥 string으로 추론
+type Key = typeof obj1[keyof typeof obj1]; // value들의 타입만 가져오는 것이 가능함
+const value1: Key = '123'; // value1의 값은 '123', 'hello', 'world' 중 하나가 되어야 함
+
+// Type과 Interface의 차이
+type A = { a: string };
+const a3: A = { a: 'hello' };
+interface B {
+  a: string;
+}
+const b3: B = { a: 'hello' };
+// type이 간단은 하지만 객체지향을 하고 싶으면 interface 쓰는 게 함수도 다양하고 좋음
+
+// union(|)
+/*
+function add2(x: string | number, y: string | number): string | number {
+  return x + y; 
+}
+const result2: string = add(1, 2);
+*/
+// 위 코드에서 result2가 string이 되는 것을 잡지 못하므로 이런 거 막기 위해서 애초에 add2에서 타입 잘 잡아야 함
+
+// intersection
+type A4 = string & number;
+// string이면서 number인 것은 불가한데?
+type A5 = { hello: 'world' } & { dog: 'foot' };
+const a5: A5 = { hello: 'world', dog: 'foot' };
+
+type A6 = { hello: 'world' } | { dog: 'foot' };
+const a6: A6 = { hello: 'world', dog: 'foot' }; // { hello: 'world' }, { dog: 'foot' } 도 됨
+// &는 모든 속성이 있어야 하고 |는 여러 속성 중 하나만 있으면 되고!
