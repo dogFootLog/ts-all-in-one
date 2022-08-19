@@ -174,3 +174,69 @@ const a5: A5 = { hello: 'world', dog: 'foot' };
 type A6 = { hello: 'world' } | { dog: 'foot' };
 const a6: A6 = { hello: 'world', dog: 'foot' }; // { hello: 'world' }, { dog: 'foot' } 도 됨
 // &는 모든 속성이 있어야 하고 |는 여러 속성 중 하나만 있으면 되고!
+
+type Animal = { breath: true };
+type Poyouryu = Animal & { breed: true };
+type Human = Poyouryu & { think: true };
+const zerocho: Human = { breath: true, breed: true, think: true };
+// type 개념은 확장의 개념으로 상속이 가능함
+
+interface AnimalI {
+  breath: true;
+}
+interface PoyouryuI extends AnimalI {
+  breed: true;
+}
+const p: PoyouryuI = { breath: true, breed: true };
+// Interface로 상속하는 법
+const p2: Animal & { breed: true } = { breath: true, breed: true };
+// type은 이것처럼 막 욱여넣기가 가능하다는 점이 인터페이스보다 유리
+// 그런데 interface가 type extend하는 것도 가능하고... 둘이 명확하게 구분돼 있는 것은 아님
+// 둘 간의 기능적 차이보다는 표현적 차이가 실무에서는 더 중요
+
+interface interf {
+  talk: () => void;
+}
+interface interf {
+  eat: () => void;
+}
+interface interf {
+  shit: () => void;
+}
+// const a7: interf = { talk() {}, eat() {}, shit() {} };
+// interface는 이렇게 여러 번 선언하는 게 가능하고 그냥 선언하면 계속 속성이 추가됨
+// 라이브러리에 사용하기에 유리
+interface interf {
+  sleep: () => void;
+}
+const a8: interf = { talk() {}, eat() {}, shit() {}, sleep() {} };
+
+// 현업에서 typescrip naming rule 2가지
+interface Props {} // 옛날엔 IProps, TType, EHello처럼 대문자 붙였었음. 요즘엔 안 붙이는 게 대세
+type Type = string | number;
+enum Hello {
+  Left,
+  Right,
+}
+const a9: Props = {};
+// 솔직히 이제는 Props가 '타입'이라는 사실이 중요하지 interface인지 type인지 enum인지는 중요하지 않다.
+// 제네릭에는 아직 붙임
+
+// 큰 타입과 작은 타입
+type A10 = string | number;
+type B10 = string;
+// 둘 중 어느 게 넓은 타입, 좁은 타입인가? A10이 넓은 타입. 집합의 개념
+// 좁은 타입을 넓은 타입에 넣기 가능. 반대로는 불가
+type C10 = string & number; // 실질적으로 만족시킬 수 없는데 어쨌든 가장 좁은 타입
+
+type A11 = { name: string };
+type B11 = { age: number };
+type C11 = { name: string; age: number };
+// 객체는 상세할수록 좁다. C11이 A11, B11보다 넓은 타입
+
+type AB = A11 | B11;
+type C12 = A11 & B11;
+const c12: C12 = { name: 'dog', age: 27 /* married: false */ }; // married와 같이 좁은 타입을 넣으면 에러 발생
+// 아까는 된다고 했는데? 객체 리터럴을 넣으면 타입이 넓냐 좁냐 + 잉여속성 검사까지 진행함.
+const obj12 = { name: 'dog', age: 27, married: false };
+const c13: C12 = obj12; // 이건 또 에러 안남.... 객체리터럴을 중간에 넣으면 잉어타입을 검사하지 않기 때문
