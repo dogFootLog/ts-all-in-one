@@ -240,3 +240,5 @@ const c12: C12 = { name: 'dog', age: 27 /* married: false */ }; // married와 �
 // 아까는 된다고 했는데? 객체 리터럴을 넣으면 타입이 넓냐 좁냐 + 잉여속성 검사까지 진행함.
 const obj12 = { name: 'dog', age: 27, married: false };
 const c13: C12 = obj12; // 이건 또 에러 안남.... 객체리터럴을 중간에 넣으면 잉어타입을 검사하지 않기 때문
+
+const a14;
