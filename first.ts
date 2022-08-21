@@ -241,4 +241,7 @@ const c12: C12 = { name: 'dog', age: 27 /* married: false */ }; // married와 �
 const obj12 = { name: 'dog', age: 27, married: false };
 const c13: C12 = obj12; // 이건 또 에러 안남.... 객체리터럴을 중간에 넣으면 잉어타입을 검사하지 않기 때문
 
-const a14;
+// 인터페이스끼리는 합쳐지지만 type 별칭은 합쳐지지 않는다.
+type B12 = { a: string };
+// type B12 = { b: string }; // 에러
+// intersection으로 상속 가능
