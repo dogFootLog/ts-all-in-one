@@ -245,3 +245,9 @@ const c13: C12 = obj12; // 이건 또 에러 안남.... 객체리터럴을 중�
 type B12 = { a: string };
 // type B12 = { b: string }; // 에러
 // intersection으로 상속 가능
+
+interface A13 {
+  a: string;
+}
+const obj13: A13 = { a: 'hello' /*, b: 'woirld'*/ };
+// 객체리터럴은 잉여속성검사로 인해 오류 발생
