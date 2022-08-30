@@ -250,4 +250,47 @@ interface A13 {
   a: string;
 }
 const obj13: A13 = { a: 'hello' /*, b: 'woirld'*/ };
-// 객체리터럴은 잉여속성검사로 인해 오류 발생
+// 객체리터럴은 잉여속성검사로 인해 오류 발생. 어떨 때는 에러가 발생하고 어떨 때는 안함
+
+function a14(): void {
+  // 함수의 return 타입이 void이면 return 대상이 있으면 안됨
+  return undefined; // undefined는 가능
+  // return null은 또 안됨
+}
+
+const b14 = a14();
+
+interface Human2 {
+  talk: () => void;
+}
+const human2: Human2 = {
+  talk() {
+    return 'abc';
+    // void 타입인데 return abc가 가능...
+    // void function과 메서드로 선언할 때의 void의 역할이 다르다고 보는 게 좋음
+  },
+};
+
+const humanBeing = human2.talk(); // humanBeing은 void type.
+// const humanBeing = human2.talk() as unknown as string; // 이렇게 타입 강제로 변경은 가능함
+// const humanBeing = <number><unknown>human2.talk();
+
+// 매개변수로 선언한 void
+function a15(callback: () => void): void {}
+a15(() => {
+  return '3';
+}); // 이 경우에도 return 가능
+
+declare function forEach2(
+  arr: number[],
+  callback: (
+    e1: number
+  ) => void /* 당연히 number는 에러 안 나는데 void도 에러 안남 */
+): void; // 여기가 void가 아니라 undefined이면 아래 둘 다 에러남. void도 undefined 형식에 할당 불가
+// 원래는 바로 구현부 선언해줘야 하는데 그게 힘들 때는 declare 키워드. declare 키워드는 자바스크립트 변환 시 사라짐
+let target: number[] = [];
+forEach2([1, 2, 3], (e1) => target.push(e1));
+forEach2([1, 2, 3], (e1) => {
+  target.push(e1);
+});
+// declare는 외부에서 만들어지는 애들 타입선언
