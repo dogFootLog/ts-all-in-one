@@ -294,3 +294,16 @@ forEach2([1, 2, 3], (e1) => {
   target.push(e1);
 });
 // declare는 외부에서 만들어지는 애들 타입선언
+
+// unknown VS any
+// any 쓸바에는 unknown을 한다. any 써버리면 타입스크립트가 타입 체킹을 아예 포기해버림 => 쓰는 이유 상실
+// unknown을 쓰면 b의 타입을 직접 정해줘서 정해진 타입만 쓸 수 있게 함.
+const humanBeing2: unknown = human2.talk();
+(humanBeing2 as Human2).talk(); // 이처럼 구현 시에는 unknown을 다시 채워줘야 함
+
+try {
+} catch (error) {
+  // error.message로 할려고 하면 에러. 어떤 에러가 날지 모르니깐.
+  (error as Error).message; // 옛날에는 error을 any 타입으로 했는데 이제는 직접 써야 함
+  // 예) (error as AxiosError).message
+}
