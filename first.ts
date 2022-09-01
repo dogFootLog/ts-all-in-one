@@ -307,3 +307,5 @@ try {
   (error as Error).message; // 옛날에는 error을 any 타입으로 했는데 이제는 직접 써야 함
   // 예) (error as AxiosError).message
 }
+// 타입 간 대입 가능 표
+// any는 never 빼고 다 대입 가능... 나중에 체크
