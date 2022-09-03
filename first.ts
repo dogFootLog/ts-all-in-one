@@ -310,4 +310,31 @@ try {
 // 타입 간 대입 가능 표
 // any는 never 빼고 다 대입 가능... 나중에 체크
 
-// 타입 좁히기
+// 타입 좁히기 (타입가드)
+function numOrStr(a: number | string) {
+  if (typeof a === 'string') {
+    a.split(',');
+  } else {
+    a.toFixed(1);
+  }
+}
+numOrStr('123');
+numOrStr(1);
+// 에러 안남
+
+function numOrStr2(a: number | string) {
+  // a.toFixed(1);
+  // 타입스크립트는 모든 가능성을 고려하기 때문에 a가 string이면 toFixed를 못 쓰니깐 경고를 띄워줌
+  // 'string' 형식에 'toFixed' 속성이 없습니다. => 타입스크립트 에러 메시지는 마지막 줄만 보면 됨
+  // toFixed를 쓸려면 a는 number임을 확실히 알려줘야 함.
+  (a as number).toFixed(1); // 위험한 코드. 우리가 실수할 수도 있으니깐. 우리가 문자열 실수로 주면 바로 에러.
+  // unknown, 남이 만든 타입이 틀렸을 때 빼고는 as를 절대 쓰지 않는다.
+  if (typeof a === 'number') {
+    a.toFixed(1); // 타입 가드
+  }
+  if (typeof a === 'string') {
+    a.charAt(1); // 타입 가드
+  }
+}
+numOrStr2('123');
+numOrStr2(1);
