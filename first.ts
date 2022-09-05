@@ -331,10 +331,56 @@ function numOrStr2(a: number | string) {
   // unknown, 남이 만든 타입이 틀렸을 때 빼고는 as를 절대 쓰지 않는다.
   if (typeof a === 'number') {
     a.toFixed(1); // 타입 가드
+  } else {
+    // a가 string 타입인 경우라는 것까지는 파악함
   }
   if (typeof a === 'string') {
     a.charAt(1); // 타입 가드
   }
+  if (typeof a === 'boolean') {
+    // a.toString();
+  }
 }
 numOrStr2('123');
 numOrStr2(1);
+
+function numOrNumArray(a: number | number[]) {
+  // number 배열도 구분 가능
+  if (Array.isArray(a)) {
+    // number[]
+    a.concat(4);
+  } else {
+    // number
+    a.toFixed(3);
+  }
+}
+numOrNumArray(123);
+numOrNumArray([1, 2, 3]);
+
+class AA {
+  aaa() {}
+}
+class BB {
+  bbb() {}
+}
+function aOrB(param: AA | BB) {
+  if (param instanceof AA) {
+    param.aaa();
+  }
+}
+aOrB(new AA()); // 인스턴스 타입으로만 넣을 수 있음
+aOrB(new BB()); // aOrB(AA) 처럼 바로 넣으면 에러남
+
+type BBB = { type: 'b'; bbb: string };
+type CCC = { type: 'c'; ccc: string };
+type DDD = { type: 'd'; ddd: string };
+
+function typeCheck(a: BBB | CCC | DDD) {
+  if (a.type === 'b') {
+    a.bbb;
+  } else if (a.type === 'c') {
+    a.ccc;
+  } else {
+    a.ddd;
+  }
+}
