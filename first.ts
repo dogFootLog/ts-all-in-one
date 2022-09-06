@@ -373,7 +373,7 @@ aOrB(new BB()); // aOrB(AA) 처럼 바로 넣으면 에러남
 
 type BBB = { type: 'b'; bbb: string };
 type CCC = { type: 'c'; ccc: string };
-type DDD = { type: 'd'; ddd: string };
+type DDD = { type: 'd'; ddd: string }; //  type: 'c'로 만들면 바로 에러 뜨게 됨. 그러면 a를 CCC 또는 DDD 타입으로 추론함. BBB 정도는 알아서 제끼긴 함. 그리고 마지막 else는 never 타입이 됨
 
 function typeCheck(a: BBB | CCC | DDD) {
   if (a.type === 'b') {
@@ -382,5 +382,51 @@ function typeCheck(a: BBB | CCC | DDD) {
     a.ccc;
   } else {
     a.ddd;
+  }
+}
+// 둘은 같은 속성인데 값이 다르거나, 혹은 속성 이름 자체가 다르거나 한 것으로 구분이 가능함.
+function typeCheck2(a: BBB | CCC | DDD) {
+  if ('bbb' in a) {
+    // 타입스크립트에서는 타입 검사 때문에 in 키워드를 자주 씀
+    a.type;
+  }
+}
+// 보통 값으로 구분하기는 하는데 속성 이름으로도 구분이 가능은 하긴 함
+
+// 좋은 습관!!!
+const dog = { type: 'dog' };
+const cat = { type: 'cat' };
+// 타입 검사가 가능하게끔 미리 만들어 놓는 것
+// if (a.type === 'dog') { ... }
+// 혹은 속성으로 구분. bark(), meow(), ... if ('bark' in dog) ...
+
+// 타입을 구분해주는 커스텀 함수를 직접 만들 수 있음.
+interface Cat {
+  meow: number;
+}
+interface Dog {
+  bark: number;
+}
+function catOrDog(a: Cat | Dog): a is Dog {
+  // 리턴 값 안에 is가 들어 있다 => 타입 구분 커스텀 함수
+  // 타입 판별 직접. a에 meow라는 속성이 있으면 고양이로 판별해서 false 리턴
+  if ((a as Cat).meow) {
+    return false;
+  }
+  return true;
+}
+const cog: Cat | Dog = { meow: 3 };
+if (catOrDog(cog)) {
+  console.log(cog.meow);
+}
+if ('meow' in cog) {
+  console.log(cog.meow);
+}
+function pet(a: Cat | Dog) {
+  if (catOrDog(a)) {
+    console.log(a.bark);
+  }
+  if ('meow' in a) {
+    console.log(a.meow);
   }
 }
