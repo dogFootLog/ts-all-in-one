@@ -31,3 +31,21 @@ if (z) {
 } else {
   z; // undefined, null
 }
+
+interface A {
+  readonly a: string;
+  b: string;
+}
+const aaaa: A = { a: 'hello', b: 'world' };
+// aaaa.a = '123'; // readonly이므로 에러
+
+type B = { a: string; b: string; c: string; d: string };
+type C = { [key: string]: string }; // 위 아래 동치
+type D = { [key: string]: number };
+const d: D = { a: 3, b: 5, c: 5 };
+
+type E = 'Human' | 'Mammal' | 'Animal';
+type F = { [key in E]: number };
+const f: F = { Human: 123, Mammal: 2, Animal: 7 };
+type G = { [key in E]: E };
+const g: G = { Human: 'Animal', Mammal: 'Human', Animal: 'Human' };
