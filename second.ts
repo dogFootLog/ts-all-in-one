@@ -49,3 +49,5 @@ type F = { [key in E]: number };
 const f: F = { Human: 123, Mammal: 2, Animal: 7 };
 type G = { [key in E]: E };
 const g: G = { Human: 'Animal', Mammal: 'Human', Animal: 'Human' };
+
+cosnt h = 3;
