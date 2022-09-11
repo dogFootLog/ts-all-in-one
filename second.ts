@@ -50,4 +50,13 @@ const f: F = { Human: 123, Mammal: 2, Animal: 7 };
 type G = { [key in E]: E };
 const g: G = { Human: 'Animal', Mammal: 'Human', Animal: 'Human' };
 
-cosnt h = 3;
+class A {
+  a: string;
+  b: number;
+  constructor() {
+    this.a = '123';
+    this.b = 123;
+  }
+
+  method() {}
+}
