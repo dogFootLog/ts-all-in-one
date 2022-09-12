@@ -36,7 +36,13 @@ interface A {
   readonly a: string;
   b: string;
 }
-const aaaa: A = { a: 'hello', b: 'world' };
+const aaaa: A = {
+  a: 'hello',
+  b: 'world',
+  method: function (): void {
+    throw new Error('Function not implemented.');
+  },
+};
 // aaaa.a = '123'; // readonly이므로 에러
 
 type B = { a: string; b: string; c: string; d: string };
@@ -51,11 +57,11 @@ type G = { [key in E]: E };
 const g: G = { Human: 'Animal', Mammal: 'Human', Animal: 'Human' };
 
 class A {
-  a: string;
-  b: number;
+  //a: string;
+  b: string;
   constructor() {
-    this.a = '123';
-    this.b = 123;
+    //this.a = '123';
+    this.b = '123';
   }
 
   method() {}
