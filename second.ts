@@ -66,3 +66,30 @@ class A {
 
   method() {}
 }
+
+interface intf {
+  readonly a: string;
+  b: string;
+}
+// 근데 굳이 class에 implements는 잘 안함
+class Clas1 implements intf {
+  a: string = '123';
+  b: string = 'world';
+}
+
+class Clas2 extends Clas1 {}
+
+new Clas2().a;
+
+// protected는 안에서도 쓸 수 있는데 밖에서(인스턴스에서는) 못 씀.
+// private과의 차이 ==> 상속 받았을 때 쓸 수 있냐 없냐. protected는 부모의 protected 사용 가능
+// private, protected는 타입스크립트에서 타입 검사할 때만 쓰이고 자바스크립트로 변환되고 나면 사라짐
+
+// 객체지향 원칙: 추상에 의존하고 구현에 의존하지 말아라
+// 인터페이스가 추상, 클래스가 구현
+// 추상과 구현 => 객체지향 원칙을 중시하면 interface를 꼭 만들어서 implement 시키는데 자바 아니고 자바스크립트에선 굳이 뭐...
+
+// 클래스의 좋은 점: 자체로 타입이라 바로 다른 곳에서도 사용 가능
+// 그리고 인터페이스와 달리 자바스크립트에도 남아있기 때문에 클래스 내부의 것을 가져다 쓰는 것이 가능함
+
+// abstract의 개념
